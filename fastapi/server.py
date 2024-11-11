@@ -11,7 +11,7 @@ from sklearn.ensemble import GradientBoostingClassifier  # Import your model lib
 import joblib
 
 # Load the pre-trained gradient boosting model and training data for SHAP explanations
-gb_model = joblib.load("../models/gb_model.joblib")  # Path to your model file
+model = joblib.load("../models/gb_model.joblib")  # Path to your model file
 X_train = pd.read_csv("../data/X_train.csv")  # Path to your training data
 
 app = FastAPI()
@@ -52,29 +52,30 @@ async def loan_prediction(request: LoanRequest):
 
     # Adjust the DataFrame values based on the currency
     if request.currency == "KES":
-        custom_input_data /= 0.65
+        custom_input_data[['annual_income', 'loan_amount']] /= 0.65
 
     # Preprocess the DataFrame
     processed_data = custom_input_data.copy()
     processed_data['income_loan_ratio'] = custom_input_data['annual_income'] / custom_input_data['loan_amount']
+    processed_data['credit_score_income_ratio'] = custom_input_data['credit_score'] / custom_input_data['annual_income']
     processed_data.drop(columns=['loan_amount', 'annual_income'], inplace=True)
     processed_input = log_transform(processed_data)[0]
 
     # Make the prediction
-    prediction = gb_model.predict(processed_input)[0]
+    prediction = model.predict(processed_input)[0]
     
     # Prepare the response
     response = {"prediction": int(prediction)}
 
     # Optionally add prediction probability
     if request.probability:
-        prediction_proba = gb_model.predict_proba(processed_input)
+        prediction_proba = model.predict_proba(processed_input)
         response["prediction_probability"] = prediction_proba[0].tolist()
 
     # Optionally add SHAP explanation
     if request.SHAP:
         # Initialize SHAP explainer and calculate SHAP values
-        explainer = shap.Explainer(gb_model, X_train)
+        explainer = shap.Explainer(model, X_train)
         shap_values = explainer(processed_input)
         
         # Adjust SHAP values for the original data values
