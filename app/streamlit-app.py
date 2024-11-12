@@ -15,8 +15,6 @@ api_url = "http://127.0.0.1:8000/loan"
 
 st.title('🤖 Machine Learning App')
 
-st.info('This is app builds a machine learning model!')
-
 
 with st.sidebar:
     st.header("Input Features")
