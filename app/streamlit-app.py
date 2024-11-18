@@ -13,7 +13,7 @@ from io import BytesIO
 
 api_url = "http://127.0.0.1:8000/loan"
 
-st.title('🤖 Machine Learning App')
+st.title('🤖 Loan Prediction App')
 
 
 with st.sidebar:
@@ -31,6 +31,19 @@ currency_map = {
     "Indian Rupee": "INR"
 }
 currency_api_value = currency_map[currency]
+
+with st.expander('Original Data Description'):
+    data = {
+        "Column name": ["loan_id", "no_of_dependents", "education", "self_employed", "income_unnum",
+                    "loan_amount", "loan_term", "cibil_score", "residential_assets_value", "commercial_asset_value"],
+        "Description": ["Unique customer identifier", "Number of Dependents of the Applicant", "Education of the Applicant", "Employment Status of the Applicant", "Annual Income of the Applicant",
+                    "Loan Amount", "Loan Term in Years", "Credit Score", "Row 9 - Col 2", "Row 10 - Col 2"],
+    }
+    df = pd.DataFrame(data)
+    url = "https://www.kaggle.com/datasets/architsharma01/loan-approval-prediction-dataset"
+    st.link_button("Dataset link", url)
+    st.table(data)
+
 
 if st.button("Predict"):
     payload = {
@@ -61,3 +74,5 @@ if st.button("Predict"):
     else:
         st.write("Error:", response.status_code)
         st.write("Message:", response.text)
+
+

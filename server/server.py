@@ -1,5 +1,5 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field, constr
+from fastapi import FastAPI
+from pydantic import BaseModel, Field
 from typing import Optional, Literal
 import pandas as pd
 import numpy as np
@@ -7,10 +7,8 @@ import shap
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
-from sklearn.ensemble import GradientBoostingClassifier  # Import your model library
 import joblib
 
-# Load the pre-trained gradient boosting model and training data for SHAP explanations
 model = joblib.load("./models/gb_model.joblib")  # Path to your model file
 X_train = pd.read_csv("./data/X_train.csv")  # Path to your training data
 
@@ -22,27 +20,24 @@ class LoanRequest(BaseModel):
     annual_income: int
     loan_amount: int
     credit_score: int
-    currency: Literal['KES', 'INR']  # Only allows 'KES' or 'INR'
+    currency: Literal['KES', 'INR'] 
     probability: Optional[bool] = Field(False, description="Return prediction probability")
     SHAP: Optional[bool] = Field(False, description="Return SHAP waterfall plot")
 
 # Define the log transform function
 def log_transform(*dfs):
     transformed_dfs = []
-    
     for df in dfs:
         df_copy = df.copy()
         numeric_columns = df_copy.select_dtypes(include=[np.number]).columns
         for column in numeric_columns:
             if (df_copy[column] > 0).all():
                 df_copy[column] = np.log(df_copy[column])
-        transformed_dfs.append(df_copy)
-    
+        transformed_dfs.append(df_copy)  
     return transformed_dfs
 
 @app.post("/loan")
 async def loan_prediction(request: LoanRequest):
-    # Create the input DataFrame
     custom_input_data = pd.DataFrame([{
         'loan_term': request.loan_term,
         'annual_income': request.annual_income,
@@ -50,7 +45,6 @@ async def loan_prediction(request: LoanRequest):
         'credit_score': request.credit_score
     }])
 
-    # Adjust the DataFrame values based on the currency
     if request.currency == "KES":
         custom_input_data[['annual_income', 'loan_amount']] /= 0.65
 
@@ -61,20 +55,15 @@ async def loan_prediction(request: LoanRequest):
     processed_data.drop(columns=['loan_amount', 'annual_income'], inplace=True)
     processed_input = log_transform(processed_data)[0]
 
-    # Make the prediction
     prediction = model.predict(processed_input)[0]
     
-    # Prepare the response
     response = {"prediction": int(prediction)}
 
-    # Optionally add prediction probability
     if request.probability:
-        prediction_proba = model.predict_proba(processed_input)
-        response["prediction_probability"] = prediction_proba[0].tolist()
+        prediction_probability = model.predict_proba(processed_input)
+        response["prediction_probability"] = prediction_probability[0].tolist()
 
-    # Optionally add SHAP explanation
     if request.SHAP:
-        # Initialize SHAP explainer and calculate SHAP values
         explainer = shap.Explainer(model, X_train)
         shap_values = explainer(processed_input)
         
