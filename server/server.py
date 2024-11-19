@@ -8,13 +8,18 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
 import joblib
+import os
 
-model = joblib.load("./models/gb_model.joblib")  # Path to your model file
-X_train = pd.read_csv("./data/X_train.csv")  # Path to your training data
+base_dir = os.path.dirname(os.path.abspath(__file__)) 
+
+model_path = os.path.join(base_dir, "models", "gb_model.joblib")
+data_path = os.path.join(base_dir, "data", "X_train.csv")
+
+model = joblib.load(model_path)  
+X_train = pd.read_csv(data_path)  
 
 app = FastAPI()
 
-# Define the input schema with Pydantic
 class LoanRequest(BaseModel):
     loan_term: int
     annual_income: int
@@ -24,7 +29,6 @@ class LoanRequest(BaseModel):
     probability: Optional[bool] = Field(False, description="Return prediction probability")
     SHAP: Optional[bool] = Field(False, description="Return SHAP waterfall plot")
 
-# Define the log transform function
 def log_transform(*dfs):
     transformed_dfs = []
     for df in dfs:

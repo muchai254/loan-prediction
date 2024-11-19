@@ -11,7 +11,7 @@ import base64
 from PIL import Image
 from io import BytesIO
 
-api_url = "http://127.0.0.1:8000/loan"
+api_url = "http://fastapi_server:8000"
 
 st.title('🤖 Loan Prediction App')
 
@@ -55,7 +55,7 @@ if st.button("Predict"):
     "probability": True,
     "SHAP": True
 }
-    response = requests.post(api_url, json=payload)
+    response = requests.post(f"{api_url}/loan", json=payload)
 
     if response.status_code == 200:
         result = response.json()
