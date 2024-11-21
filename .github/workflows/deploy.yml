@@ -1,0 +1,29 @@
+name: Set up SSH
+  run: |
+    echo "${{ secrets.DO_SSH_KEY }}" > ~/.ssh/id_rsa
+    chmod 600 ~/.ssh/id_rsa
+
+name: Deploy to DigitalOcean
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted  
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Pull Latest Changes on Droplet
+        run: |
+          ssh root@188.166.207.252 "cd /root/loan-prediction && git pull"
+
+      - name: Build and Restart Docker Containers
+        run: |
+          ssh root@188.166.207.252 "
+          cd /root/loan-prediction &&
+          docker-compose down &&
+          docker-compose build &&
+          docker-compose up -d"
