@@ -1,8 +1,3 @@
-name: Set up SSH
-  run: |
-    echo "${{ secrets.DO_SSH_KEY }}" > ~/.ssh/id_rsa
-    chmod 600 ~/.ssh/id_rsa
-
 name: Deploy to DigitalOcean
 on:
   push:
@@ -11,8 +6,13 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted  
+    runs-on: self-hosted
     steps:
+      - name: Set up SSH
+        run: |
+          echo "${{ secrets.DO_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
       - name: Checkout Repository
         uses: actions/checkout@v3
 
