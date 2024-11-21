@@ -13,7 +13,7 @@ from io import BytesIO
 
 api_url = "http://fastapi_server:8000"
 
-st.title('🤖 Loan Predictor app')
+st.title('🤖 Loan Predictor')
 
 
 with st.sidebar:
