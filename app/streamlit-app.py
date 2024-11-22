@@ -101,33 +101,33 @@ if predict_button:
             st.write("Error:", response.status_code)
             st.write("Message:", response.text)
 
-st.markdown(
-    """
-    <style>
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            padding: 10px 0;
-            background-color: #0E1117;
-            font-size: 16px;
-            color: #F9F9F9;
-        }
-        .footer a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
-    <div class="footer">
-        made with ❤️ by <a href="https://www.linkedin.com/in/brian-muchai-7380231a7" target="_blank"> Muchai</a>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+# st.markdown(
+#     """
+#     <style>
+#         .footer {
+#             position: fixed;
+#             bottom: 0;
+#             left: 0;
+#             width: 100%;
+#             text-align: center;
+#             padding: 10px 0;
+#             background-color: #0E1117;
+#             font-size: 16px;
+#             color: #F9F9F9;
+#         }
+#         .footer a {
+#             color: #007BFF;
+#             text-decoration: none;
+#         }
+#         .footer a:hover {
+#             text-decoration: underline;
+#         }
+#     </style>
+#     <div class="footer">
+#         made with ❤️ by <a href="https://www.linkedin.com/in/brian-muchai-7380231a7" target="_blank"> Muchai</a>
+#     </div>
+#     """,
+#     unsafe_allow_html=True,
+# )
 
 
