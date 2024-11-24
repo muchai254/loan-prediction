@@ -17,6 +17,11 @@ jobs:
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/id_rsa
 
+      - name: Add SSH Key to Agent
+        run: |
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
+
       - name: Add Host to Known Hosts
         run: |
           ssh-keyscan -H 188.166.207.252 >> ~/.ssh/known_hosts
