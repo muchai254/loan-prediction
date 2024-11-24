@@ -26,7 +26,7 @@ st.markdown(" -  Clear and Explainable Predictions by use of a SHAP waterfall di
 st.markdown(" -  Custom API Endpoint for Easy Integration.")
 st.markdown(" -  Seamless CI/CD Pipeline for Ongoing Improvement")
 st.markdown(" > You can find the full project documentation and resources used [here]()")
-st.markdown(" > The API documentation can be found here [here]()")
+st.markdown(" > The API documentation can be found here [here](https://loanpredictor.gitbook.io/api-docs)")
 payload = {
 "loan_term": 0,
 "annual_income": 0,
