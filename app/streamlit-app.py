@@ -25,7 +25,7 @@ st.markdown("This project offers the following advantages:")
 st.markdown(" -  Clear and Explainable Predictions by use of a SHAP waterfall diagram.")
 st.markdown(" -  Custom API Endpoint for Easy Integration.")
 st.markdown(" -  Seamless CI/CD Pipeline for Ongoing Improvement")
-st.markdown(" > You can find the full project documentation and resources used [here]()")
+st.markdown(" > You can find the full project documentation and resources used [here](https://medium.com/@muchaibriank/end-to-end-machine-learning-project-loan-approval-part-2-development-0e437b084ad5)")
 st.markdown(" > The API documentation can be found here [here](https://loanpredictor.gitbook.io/api-docs)")
 payload = {
 "loan_term": 0,
