@@ -19,7 +19,7 @@ services:
     networks:
       - app_network
     environment:
-      - API_URL=http://0.0.0.0:8000 
+      - API_URL=http://fastapi_server:8000 
 
 networks:
   app_network:

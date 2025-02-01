@@ -86,6 +86,4 @@ async def loan_prediction(request: LoanRequest):
         response["SHAP_plot"] = img_base64
 
         plt.close()
-       
-
     return response
