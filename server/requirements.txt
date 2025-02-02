@@ -4,7 +4,7 @@ matplotlib
 numpy
 pandas
 pydantic
-scikit_learn
+scikit_learn==1.5.1
 seaborn
 shap
 uvicorn
